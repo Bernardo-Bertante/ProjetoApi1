@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+</head>
+<body>
+    <h1>Pagina Inicial</h1>
+
+    <a href="/admin">Cadastro novo Cliente</a>
+
+   
+        <% clients.forEach((client) =>{ %>
+        
+            <section>
+
+                <h2><%= client.name %></h2>
+                <p><%= client.cpf %></p>
+                <p><%= client.number %></p>
+                <p><%= client.email %></p>
+                <p><%= client.address %></p>
+                <p><%= client.debt %></p>
+
+            </section>
+
+        
+        <% }) %>
+    
+</body>
+</html>

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const client = new mongoose.Schema({
+const clientSchema = new mongoose.Schema({
     name: {
         type: String,
         require: true,
@@ -9,7 +9,7 @@ const client = new mongoose.Schema({
         type: Number,
         require: true,
     },
-    cellphone: {
+    number: {
         type: Number,
         require: true,
     },
@@ -26,3 +26,5 @@ const client = new mongoose.Schema({
         require: true,
     },
 });
+
+module.exports = mongoose.model("Client", clientSchema);
