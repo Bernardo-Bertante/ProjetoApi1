@@ -6,7 +6,7 @@ const clientSchema = new mongoose.Schema({
         require: true,
     },
     cpf: {
-        type: Number,
+        type: String,
         require: true,
     },
     number: {

@@ -6,10 +6,12 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
 const Client = require("./models/Client");
+const clientRoutes = require("./routes/clientRoutes");
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded());
+app.use("/create", clientRoutes);
 
 connectToDB();
 
@@ -18,14 +20,8 @@ app.get("/", async (req, res) => {
     res.render("index", { clients });
 });
 
-app.get("/admin", (req, res)=> {
-    res.render("admin");
+app.get("/register", (req, res)=> {
+    res.render("register");
 }); 
-
-app.post("/create", async (req, res) => {
-    const client = req.body;
-    await Client.create(client);
-    res.redirect("/");
-});
 
 app.listen(port, () => console.log(`Esse servidor esta rodando em http://localhost:${port}`));

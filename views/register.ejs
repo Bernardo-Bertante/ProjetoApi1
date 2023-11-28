@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/basicstyle.css">
+    <script src="/index.js" defer></script>
+    
     <title>Clientes</title>
 </head>
 <body>
     <h1>Cadastre um novo cliente</h1>
 
-    <form action="/create" method="post">
+    <form action="/create" method="post" id="form">
         <label for="name">Nome:</label>
         <input type="text" name="name" id="name"> 
 
@@ -29,5 +32,31 @@
 
         <button type="submit">CADASTRAR</button>
     </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#form').submit(function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/create',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        alert(response); 
+                        window.location.href = '/';
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText); 
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
 </body>
 </html>
