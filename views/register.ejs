@@ -9,52 +9,132 @@
     <title>Clientes</title>
 </head>
 <body>
-    <h1>Cadastre um novo cliente</h1>
 
-    <form action="/create" method="post" id="form">
-        <label for="name">Nome:</label>
-        <input type="text" name="name" id="name"> 
+    <nav>
+        <ul>
+            <li><a href="/"><img src="/image/icons8-pet-80.png" alt="Logo Oficial"></a></li>
+        </ul>
+    </nav>
 
-        <label for="cpf">CPF:</label>
-        <input type="text" name="cpf" id="cpf"> 
-        
-        <label for="number">Telefone:</label>
-        <input type="text" name="number" id="number"> 
+    <section id="registerMenu">
 
-        <label for="email">Email:</label>
-        <input type="text" name="email" id="email"> 
+        <h1>Cadastre um novo cliente</h1>
 
-        <label for="address">Endereço:</label>
-        <input type="text" name="address" id="address"> 
+        <form action="/create" method="post" id="form">
+            <div>
+                <label for="name">Nome:</label>
+                <input type="text" name="name" id="name" class="required" oninput="nameValidate()"> 
+                <span class="span-required">Nome deve ser maior que 3 caracteres</span>
+            </div>
+            <div>
+                <label for="cpf">CPF:</label>
+                <input type="text" name="cpf" id="cpf" class="required" oninput="cpfValidate()">
+                <span class="span-required">Digite um CPF válido</span> 
+            </div> 
+            <div>
+                <label for="number">Telefone:</label>
+                <input type="text" name="number" id="number" class="required" oninput="numberValidate()"> 
+                <span class="span-required">Digite um telefone válido</span>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email" class="required" oninput="emailValidate()">
+                <span class="span-required">Digite um email válido</span>
+            </div>
+            <div>
+                <label for="address">Endereço:</label>
+                <input type="text" name="address" id="address" class="required" oninput="addressValidate()">
+                <span class="span-required">Digite um endereço válido</span> 
+            </div>
+            <div>
+                <label for="debt">Débito:</label>
+                <input type="text" name="debt" id="debt"> 
+            </div>
 
-        <label for="debt">Débito</label>
-        <input type="text" name="debt" id="debt"> 
+            <button type="submit">CADASTRAR</button>
+        </form>
 
-        <button type="submit">CADASTRAR</button>
-    </form>
+        <script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#form').submit(function(event) {
+            const form = document.getElementById("form");
+            const fields = document.querySelectorAll(".required");
+            const spans = document.querySelectorAll(".span-required");
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const cpfRegex = /^(\d{3}\.?\d{3}\.?\d{3}-?\d{2}|\d{11})$/;
+            const numRegex = /^\(?\d{2}\)?\s?9\d{4}-?\d{4}$/;
+
+            form.addEventListener("submit", (event) => {
                 event.preventDefault();
+                nameValidate();
+                cpfValidate();
+                numberValidate();
+                emailValidate();
+                addressValidate();
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/create',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        alert(response); 
-                        window.location.href = '/';
-                    },
-                    error: function(xhr, status, error) {
-                        alert(xhr.responseText); 
-                    }
-                });
+                const errors = document.querySelectorAll('.span-required');
+                const hasErrors = Array.from(errors).some(span => span.style.display === 'block');
+
+                if (!hasErrors) {
+                    // Se não houver erros, envie o formulário
+                    form.submit();
+                }
             });
-        });
-    </script>
 
+
+            function setError(index) {
+                fields[index].style.border = '2px solid #e63636';
+                spans[index].style.display = 'block';
+            }
+
+            function removeError(index) {
+                fields[index].style.border = '';
+                spans[index].style.display = 'none';
+            }
+
+            function nameValidate () {
+                if (fields[0].value.length <= 3) {
+                    setError(0);
+                }
+                else {
+                    removeError(0);
+                }
+            }
+
+            function cpfValidate () {
+                if (!cpfRegex.test(fields[1].value)) {
+                    setError(1);
+                } else {
+                    removeError(1)
+                }
+            }
+
+            function numberValidate () {
+                if (!numRegex.test(fields[2].value)) {
+                    setError(2);
+                } else {
+                    removeError(2)
+                }
+            }
+
+            function emailValidate () {
+                if (!emailRegex.test(fields[3].value)) {
+                    setError(3);
+                } else {
+                    removeError(3)
+                }
+            }
+
+            function addressValidate () {
+                if (fields[4].value.length <= 5) {
+                    setError(4);
+                } else {
+                    removeError(4)
+                }
+            }
+
+        </script>
+
+    </section>
 
 
 
