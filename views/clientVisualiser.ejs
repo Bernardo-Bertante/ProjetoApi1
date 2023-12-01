@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/basicstyle.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+    <title>Clientes</title>
+</head>
+<body>
+
+    <nav id="navClient">
+        <ul>
+            <li><a href="/"><img src="/image/icons8-pet-80.png" alt="Logo Oficial"></a></li>
+            <div id="icons">
+                <div>
+                    <li><a id="edit" href="/edit/<%= client._id %>"><i class="bi bi-pen"></i></a></li>
+                </div>
+                <div>
+                    <li><a id="delete" href="/delete/<%= client._id %>"><i class="bi bi-trash"></i></a></li> 
+                </div>
+            </div>
+        </ul>
+    </nav>
+
+    <section id="clientView"> 
+        <h1>Cliente</h1>
+
+            <form id="clientViewForm">
+                <div>
+                    <label for="name">Nome:</label>
+                    <label for="name"><%= client.name %></label>
+                </div>
+                <div>
+                    <label for="cpf">CPF:</label>
+                    <label for="cpf"><%= client.cpf %></label>      
+                </div> 
+                <div>
+                    <label for="number">Telefone:</label>
+                    <label for="number"><%= client.number %></label>
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <label for="email"><%= client.email %></label>
+                </div>
+                <div>
+                    <label for="address">Endereço:</label>
+                    <label for="address"><%= client.address %></label>
+                </div>
+                <div>
+                    <label for="debt">Débito:</label>
+                    <label for="debt"><%= client.debt %></label>
+                </div>
+    
+            </form>
+    </section>
+
+    <% if (_client != null) { %>
+        <section id="modal">
+            <div id="card">
+                <a id="close-modal" href="/visualiser/<%= client._id %>"><i class="bi bi-x-lg"></i></a>
+                <h2>Editar dados de: <%= client.name %> </h2>
+                <hr>
+
+                <form action="/update/<%= client._id %>" method="post" id="form-modal">
+                    <div>
+                        <label for="name">Nome:</label>
+                        <input type="text" name="name" id="name" class="required" oninput="nameValidate()" value="<%= client.name %>"> 
+                        <span class="span-required">Nome deve ser maior que 3 caracteres</span>
+                    </div>
+                    <div>
+                        <label for="cpf">CPF:</label>
+                        <input type="text" name="cpf" id="cpf" class="required" oninput="cpfValidate()" value="<%= client.cpf %>">
+                        <span class="span-required">Digite um CPF válido</span> 
+                    </div> 
+                    <div>
+                        <label for="number">Telefone:</label>
+                        <input type="text" name="number" id="number" class="required" oninput="numberValidate()" value="<%= client.number %>"> 
+                        <span class="span-required">Digite um telefone válido</span>
+                    </div>
+                    <div>
+                        <label for="email">Email:</label>
+                        <input type="text" name="email" id="email" class="required" oninput="emailValidate()" value="<%= client.email %>">
+                        <span class="span-required">Digite um email válido</span>
+                    </div>
+                    <div>
+                        <label for="address">Endereço:</label>
+                        <input type="text" name="address" id="address" class="required" oninput="addressValidate()" value="<%= client.address %>">
+                        <span class="span-required">Digite um endereço válido</span> 
+                    </div>
+                    <div>
+                        <label for="debt">Débito:</label>
+                        <input type="text" name="debt" id="debt" value="<%= client.debt %>"> 
+                    </div>
+        
+                    <button type="submit">ATUALIZAR</button>
+                </form>
+
+            </div>
+
+            <script>
+
+                const form = document.getElementById("form-modal");
+                const fields = document.querySelectorAll(".required");
+                const spans = document.querySelectorAll(".span-required");
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const cpfRegex = /^(\d{3}\.?\d{3}\.?\d{3}-?\d{2}|\d{11})$/;
+                const numRegex = /^\(?\d{2}\)?\s?9\d{4}-?\d{4}$/;
+    
+                form.addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    nameValidate();
+                    cpfValidate();
+                    numberValidate();
+                    emailValidate();
+                    addressValidate();
+    
+                    const errors = document.querySelectorAll('.span-required');
+                    const hasErrors = Array.from(errors).some(span => span.style.display === 'block');
+    
+                    if (!hasErrors) {
+                        // Se não houver erros, envie o formulário
+                        form.submit();
+                    }
+                });
+    
+    
+                function setError(index) {
+                    fields[index].style.border = '2px solid #e63636';
+                    spans[index].style.display = 'block';
+                }
+    
+                function removeError(index) {
+                    fields[index].style.border = '';
+                    spans[index].style.display = 'none';
+                }
+    
+                function nameValidate () {
+                    if (fields[0].value.length <= 3) {
+                        setError(0);
+                    }
+                    else {
+                        removeError(0);
+                    }
+                }
+    
+                function cpfValidate () {
+                    if (!cpfRegex.test(fields[1].value)) {
+                        setError(1);
+                    } else {
+                        removeError(1)
+                    }
+                }
+    
+                function numberValidate () {
+                    if (!numRegex.test(fields[2].value)) {
+                        setError(2);
+                    } else {
+                        removeError(2)
+                    }
+                }
+    
+                function emailValidate () {
+                    if (!emailRegex.test(fields[3].value)) {
+                        setError(3);
+                    } else {
+                        removeError(3)
+                    }
+                }
+    
+                function addressValidate () {
+                    if (fields[4].value.length <= 5) {
+                        setError(4);
+                    } else {
+                        removeError(4)
+                    }
+                }
+    
+            </script>
+            
+        </section>
+    <% } %>
+
+    
+
+
+</body>
+</html>

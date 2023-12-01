@@ -10,10 +10,10 @@
 </head>
 <body>
 
-    <nav>
+    <nav id="main">
         <ul>
-            <li><a href="/"><img src="/image/icons8-pet-80.png" alt="Logo Oficial"></a></li>
-            <li><a href="/register"><i class="bi bi-person-plus-fill"></i></a></li>
+            <li> <a href="/"><img src="/image/icons8-pet-80.png" alt="Logo Oficial"></a> </li>
+            <li> <a href="/register"><i class="bi bi-person-plus-fill"></i></a> </li>
         </ul>
     </nav>
 
@@ -32,6 +32,7 @@
                         <tr class="clients"> 
                         
                             <td> <%= client.name %> </td>
+                            <td> <a href="/visualiser/<%= client._id %>"><i class="bi bi-eye"></i></a> </td>
 
                         </tr>
                         <% }) %> 
